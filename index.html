@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Jurusan Teknik Komputer dan Informatika - Politeknik Negeri Medan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /*  1. Token warna & dasar  */
+      :root {
+        /* Ubah variabel --bg menjadi linear-gradient */
+            --bg: linear-gradient(135deg, #ecebf3 0%, #458947 50%, #082f0f 100%);
+            --card: #0b6846;    /* Background kartu  */
+            --line: #223024;    /* Garis tepi/border kartu */
+            --soft: #656966;    /* Background elemen kecil di dalam kartu */
+            --primary: #06ee5f; /* Warna tombol/link  */
+            --radius: 12px;
+              box-sizing: border-box;
+              padding-top: env(safe-area-inset-top, 0px);
+              padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+    html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+    *, *::before, *::after { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        background-attachment: fixed; /* Membuat gradasi tetap saat di-scroll */
+        min-height: 100vh; /* Memastikan background memenuhi tinggi layar */
+        color: var(--ink);
+        font: 15px/1.6 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      }
+    a { color: inherit; text-decoration: none; }
+    :focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+    /* 2. Layout  */
+    main { max-width: 1180px; margin: auto; padding: 20px; }
+    .grid { display: grid; gap: 18px; }
+    .g2 { grid-template-columns: repeat(2, 1fr); }
+    .g3 { grid-template-columns: repeat(3, 1fr); }
+    .g4 { grid-template-columns: repeat(4, 1fr); }
+    .mt { margin-top: 18px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+    @media (max-width: 820px) {
+      .g2, .g3, .g4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 560px) {
+      .g2, .g3, .g4 { grid-template-columns: 1fr; }
+    }
+
+    /*  3. Header & navigasi  */
+    header {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 9;
+      background: var(--card);
+      border-bottom: 1px solid var(--line);
+    }
+    .bar {
+      max-width: 1180px;
+      margin: auto;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; line-height: 1.2; }
+    .brand small { display: block; font-size: 11px; font-weight: 500; color: var(--muted); }
+    .logo {
+      flex: none; width: 42px; height: 42px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: linear-gradient(#2c82f0, #0b2a5b);
+      color: #f6c744; font-size: 13px; font-weight: 800;
+    }
+    nav { display: flex; flex-wrap: wrap; gap: 4px; margin-left: auto; }
+    nav a { padding: 6px 10px; font-size: 13px; font-weight: 600; border-bottom: 2px solid transparent; }
+    nav a.on { color: var(--primary); border-color: var(--primary); }
+    @media (max-width: 560px) { .bar { flex-wrap: wrap; } }
+
+    /*  4. Komponen  */
+    .btn {
+      display: inline-block; padding: 10px 18px;
+      border: 1.5px solid var(--primary); border-radius: 8px;
+      background: var(--primary); color: #fff;
+      font: 700 13px inherit; font-family: inherit; cursor: pointer;
+    }
+    .btn.outline { background: transparent; color: var(--primary); }
+
+    .card { padding: 20px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+    .card h2, .card h3 { margin: 0 0 8px; }
+
+    .section-title {
+      display: flex; justify-content: space-between; align-items: center;
+      margin: 0 0 12px; padding-left: 10px;
+      border-left: 4px solid var(--primary);
+      font-size: 19px; font-weight: 800;
+    }
+    .section-title a, .link { color: var(--primary); font-size: 13px; font-weight: 700; }
+
+    .icon {
+      flex: none; width: 36px; height: 36px; border-radius: 9px;
+      display: grid; place-items: center;
+      background: var(--soft); color: var(--primary); font-weight: 800;
+    }
+    .stat { padding: 18px 8px; border-radius: 10px; background: var(--soft); text-align: center; }
+    .stat b { display: block; font-size: 26px; color: var(--primary); }
+    .pill { display: inline-block; padding: 2px 10px; border-radius: 99px; background: var(--soft); color: var(--primary); font-size: 12px; font-weight: 700; }
+
+    /* Foto berita (kalau tidak ada foto, tampil blok biru) */
+    .thumb { height: 110px; margin-bottom: 10px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #0b2a5b, #4aa3ff); }
+    .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+    /* Kalender akademik (gambar) */
+    .kalender { display: block; border-radius: 8px; overflow: hidden; background: #fff; }
+    .kalender img { display: block; width: 100%; height: auto; }
+    .kalender-info { margin: 10px 0 0; font-size: 13px; color: var(--muted); }
+
+    /* Struktur organisasi (gambar) */
+        .struktur { display: block; border-radius: 8px; overflow: hidden; background: #fff; }
+        .struktur img { display: block; width: 100%; height: auto; }
+    .fasilitas-img {
+      width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 12px;
+    }
+
+    .breadcrumb { margin: 4px 0 14px; font-size: 13px; color: var(--muted); }
+    .breadcrumb a { color: var(--primary); font-weight: 600; }
+    h1.page-title { margin: 0 0 6px; font-size: 30px; }
+    ul.list, ol.list { padding-left: 20px; }
+    .list li { margin: 4px 0; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 9px 10px; border-bottom: 1px solid var(--line); text-align: left; }
+    th { background: var(--soft); }
+
+    label { font-size: 13px; font-weight: 600; }
+    input, textarea {
+      width: 100%; margin: 4px 0 12px; padding: 10px;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: var(--bg); color: var(--ink); font: inherit;
+    }
+    .ok { color: #168a4a; font-weight: 700; }
+    footer { padding: 24px; text-align: center; font-size: 13px; color: var(--muted); }
+
+    /* Daftar jurusan di halaman Program Studi */
+    .jurusan-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px 24px;
+    }
+    .jurusan-label {
+      display: inline-block; margin: 0 0 10px; padding: 8px 20px;
+      background: #ffffff; color: #020506; font-size: 14px; font-weight: 700;
+    }
+    .jurusan-prodi { margin: 0; padding: 0; list-style: none; }
+    .jurusan-prodi li { margin: 6px 0; line-height: 1.3; font-size: 13px; color: #d5d3db; }
+    /* Hanya program studi yang bisa dibuka tampil sebagai link */
+    .jurusan-prodi a { color: #6ea8ff; font-weight: 700; text-decoration: underline; }
+    .jurusan-prodi a:hover { color: #fff; }
+    @media (max-width: 820px) { .jurusan-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .jurusan-grid { grid-template-columns: 1fr; } }
+
+    /*  5. Beranda  */
+    .hero {
+  position: relative; overflow: hidden; min-height: 340px; padding: 56px 44px;
+  border-radius: 14px; color: #9fade0;
+  background:
+    linear-gradient(100deg, #1f54aa 0%, #1f54aa 10%, rgba(31, 84, 170, .6) 65%, rgba(31, 111, 235, .15) 100%),
+    url("Imagee/gedungpolmed.jpeg") center right / cover no-repeat,
+    #1f54aa;
+    }
+    
+    .hero > * { position: relative; z-index: 1; max-width: 520px; }
+    .hero h1 { margin: 8px 0; font-size: clamp(30px, 5vw, 46px); line-height: 1.1; font-weight: 800; }
+    .hero h1 b { color: #0a325a; }
+    .hero .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+    @media (max-width: 820px) { .hero { padding: 36px 22px; } }
+
+    .features {
+      position: relative; z-index: 2; margin: -34px 16px 20px; padding: 14px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px;
+      background-color: #4aa3ff; border: 1px solid var(--line); border-radius: var(--radius);
+    }
+    .features div { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="bar">
+      <a class="brand" href="#/">
+          <img class="logo" src="Imagee/polmed.jpeg" alt="Logo Politeknik Negeri Medan">
+        <span>POLITEKNIK NEGERI MEDAN<small>Jurusan Teknik Komputer dan Informatika</small></span>
+      </a>
+      <nav id="nav" aria-label="Menu utama"></nav>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer>© 2026 Teknik Komputer dan Informatika, Politeknik Negeri Medan. All rights reserved</footer>
+
+  <script>
+    "use strict";
+
+    /*  1. DATA  */
+    const MENU = [
+      ["/", "Beranda"], ["/tentang", "Tentang Kami"], ["/prodi", "Program Studi"],
+      ["/akademik", "Akademik"], ["/fasilitas", "fasilitas"],
+      ["/berita", "Berita"], ["/kontak", "Kontak"]
+    ];
+
+    // Daftar jurusan dan program studinya.
+    // Format program studi: ["Nama tampil", "kunci"]
+    // Hanya kunci yang ada di PRODI dengan buka: true yang menjadi link.
+    const JURUSAN = [
+      { nama: "Teknik Mesin", prodi: [
+        ["Program Studi Teknik Mesin"], ["Program Studi Teknik Konversi Energi"],
+        ["Program Studi Teknologi Rekayasa Pengelasan dan Fabrikasi"],
+        ["Program Studi Teknologi Rekayasa Energi Terbarukan"],
+        ["Program Studi Teknologi Rekayasa Kimia Industri"],
+        ["Program Studi Teknologi Rekayasa Manufaktur"] ] },
+      { nama: "Teknik Sipil", prodi: [
+        ["Program Studi Teknik Sipil"], ["Program Studi Teknik Perancangan Jalan dan Jembatan"],
+        ["Program Studi Manajemen Rekayasa Konstruksi Gedung"] ] },
+      { nama: "Teknik Elektro", prodi: [
+        ["Program Studi Teknik Listrik"], ["Program Studi Teknik Elektronika"],
+        ["Program Studi Teknik Telekomunikasi"],
+        ["Program Studi Teknologi Rekayasa Jaringan Telekomunikasi"],
+        ["Program Studi Teknologi Rekayasa Instalasi Listrik"],
+        ["Program Studi Teknologi Rekayasa Otomasi"] ] },
+      { nama: "Teknik Komputer dan Informatika", prodi: [
+        ["Program Studi Teknik Komputer", "tk"],
+        ["Program Studi Manajemen Informatika", "mi"],
+        ["Program Studi Teknologi Rekayasa Perangkat Lunak", "trpl"],
+        ["Program Studi Teknologi Rekayasa Multimedia Grafis", "trmg"] ] },
+      { nama: "Akuntansi", prodi: [
+        ["Program Studi Akuntansi"], ["Program Studi Keuangan dan Perbankan"],
+        ["Program Studi Keuangan dan Perbankan Syariah"],
+        ["Program Studi Akuntansi Keuangan Publik"],
+        ["Magister Terapan Sistem Informasi Akuntansi"] ] },
+      { nama: "Administrasi Niaga", prodi: [
+        ["Program Studi Administrasi Bisnis"], ["Program Studi Manajemen Bisnis"],
+        ["Program Studi Usaha Jasa Konvensi, Perjalanan Insentif dan Pameran"],
+        ["Program Studi Bahasa Inggris"] ] }
+    ];
+
+    // Halaman yang dihitung sebagai bagian dari menu lain
+    const PARENT_MENU = { profil: "tentang" };
+
+    // Program studi TKI (kartu di beranda + halaman detail).
+    // buka: true = bisa diklik dan punya halaman detail.
+    const PRODI = {
+        tk: {
+          buka: true, ikon: "CE",
+          nama: "Program Studi Teknik Komputer",
+          jurusan: "Teknik Komputer dan Informatika",
+          ringkas: "Program studi yang berfokus pada sistem komputer, perangkat keras, dan jaringan.",
+          situs: "https://ce.polmed.ac.id/",
+          visi: "Menjadi program studi teknik komputer unggul dalam pendidikan, pelatihan, maupun pengembangan teknik komputer terapan secara profesional di bidang automation pada tahun 2025.",
+          misi: [
+           "Mendidik mahasiswa yang beriman dan bertaqwa kepada Tuhan yang Maha Esa serta patuh terhadap berbagai peraturan.",
+            "Melaksanakan dengan maksimal seluruh kegiatan tridarma perguruan tinggi dalam bidang teknik komputer terapan terkini yang inovatif dan dengan cara-cara yang kreatif.",
+            "Menjalin kerjasama yang erat dengan berbagai industri lokal, nasional, maupun internasional dalam rangka menjaga kesesuaian topik maupun materi ajar dengan perkembangan dunia industri.",
+            "Menyesuaikan sarana dan prasarana laboratorium maupun workshop teknik komputer terapan dengan teknologi yang digunakan di industri.",
+            "Mengikuti perkembangan teknik komputer terapan terkini dengan mengikutsertakan sivitas akademika pada pertemuan-pertemuan ilmiah baik dengan institusi pendidikan vokasi, perusahaan-perusahaan, maupun dengan praktisi-praktisi industri.",
+            "Menjaga kesesuaian baik pengetahuan maupun keterampilan dosen-dosen dan tenaga-tenaga kependidikan dengan pertumbuhan dan pengembangan teknik komputer terapan di industri-industri."
+          ],
+          struktur: {  judul: "Struktur Organisasi Jurusan Teknik Komputer dan Informatika (Program Studi Teknik Komputer) Politeknik Negeri Medan",
+            foto: "imagee/struktur ce.png"
+          }   
+            },
+        mi: {
+        buka: true, ikon: "MI",
+        nama: "Program Studi Manajemen Informatika",
+        jurusan: "Teknik Komputer dan Informatika",
+        ringkas: "Program studi yang berfokus pada sistem informasi dan pengelolaan data.",
+        situs: "https://mi.polmed.ac.id/",
+        visi: "Menjadi program studi yang unggul dalam pengembangan aplikasi web dan mobile serta mampu bersaing di tingkat regional, nasional, dan internasional pada tahun 2025.<br><br>Menjadi pusat pendidikan vokasi yang adaptif, inovatif, dan kolaboratif di bidang manajemen informatika berbasis teknologi terapan.",
+        misi: [
+          "Mendidik mahasiswa untuk mencapai kompetensi di bidang manajemen informatika sesuai standar industri, dengan menjunjung tinggi nilai akseptabilitas, akuntabilitas, dan profitabilitas.",
+          "Menghasilkan lulusan yang kompeten, inovatif, adaptif, dan mampu bersaing di tingkat regional, nasional, dan internasional.",
+          "Melaksanakan penelitian terapan untuk pengembangan ilmu pengetahuan dan teknologi di bidang manajemen informatika, khususnya teknik instrumentasi dan kendali industri."
+        ],
+        struktur: {
+          judul: "Struktur Organisasi Program Studi Manajemen Informatika Politeknik Negeri Medan",
+          foto: "imagee/Struktur mi.png"
+        }
+      },
+      trpl: {
+        buka: true, ikon: "TRPL",
+        nama: "Program Studi Teknologi Rekayasa Perangkat Lunak",
+        jurusan: "Teknik Komputer dan Informatika",
+        ringkas: "Program studi yang berfokus pada rekayasa dan pengembangan perangkat lunak.",
+        situs: "https://trpl.polmed.ac.id/",
+        visi: "Menjadi program studi pendidikan vokasi yang profesional, unggul dan dapat bersaing di tingkat nasional maupun internasional di bidang Teknologi Rekayasa Perangkat Lunak sesuai dengan perkembangan dunia usaha dan industri.",
+        misi: [
+          "Memajukan pendidikan vokasi untuk menghasilkan tenaga vokasi di bidang teknologi rekayasa perangkat lunak.",
+          "Mengembangkan penelitian, pengabdian serta publikasi ilmiah dan antar disiplin ilmu untuk pengembangan ilmu pengetahuan di bidang ilmu teknologi rekayasa perangkat lunak secara nasional dan internasional.",
+          "Meningkatkan kesadaran terhadap interkoneksitas, interdisiplin, untuk memecahkan masalah-masalah yang dihadapi dan mengembangkan kemampuan dalam kewirausahaan."
+        ],
+        struktur: {
+          judul: "Struktur Organisasi Jurusan Teknik Komputer dan Informatika (Program Studi Teknologi Rekayasa Perangkat Lunak) Politeknik Negeri Medan",
+          foto: "Imagee/trpl.png"
+        }
+      },
+      trmg: {
+        buka: true, ikon: "TRMG",
+        nama: "Program Studi Teknologi Rekayasa Multimedia Grafis",
+        jurusan: "Teknik Komputer dan Informatika",
+        ringkas: "Program studi yang berfokus pada multimedia dan desain grafis.",
+        situs: "https://trmg.polmed.ac.id/",
+        visi: "Menjadi program studi pendidikan vokasi yang unggul di bidang teknologi multimedia grafis yang menghasilkan sumber daya manusia yang berkompetensi dan profesional di tingkat nasional dan internasional pada tahun 2026.",
+        misi: [
+          "Menyelenggarakan pendidikan vokasi bidang teknologi multimedia grafis.",
+          "Mengembangkan penelitian bidang teknologi multimedia grafis.",
+          "Melaksanakan kerja sama dengan dunia industri dan masyarakat dalam menerapkan teknologi multimedia grafis."
+        ],
+        struktur: {
+          judul: "Struktur Organisasi Jurusan Teknik Komputer dan Informatika (Program Studi Teknologi Rekayasa Multimedia Grafis) Politeknik Negeri Medan",
+          foto: "Imagee/trmg.png"
+        }
+      }
+    };
+    // foto: alamat file gambar (kosongkan atau hapus baris foto kalau tidak ada foto)
+    const BERITA = [
+      { id: 1,
+        judul: "Mahasiswa Polmed Raih Tiga Prestasi Nasional di KMIPN 2026",
+        tanggal: "17 September 2026",
+        foto: "Imagee/image1.png",
+        isi: ["Mahasiswa Politeknik Negeri Medan (Polmed) meraih tiga prestasi nasional dalam KMIPN 2026 yang berlangsung pada 9–11 September 2026. Prestasi tersebut meliputi Juara 1 Animasi Kategori Poster, Juara 2 Keamanan Siber Kategori Consistent Flag Seeker, dan Juara 3 Pengembangan Aplikasi Permainan Kategori Narration and Storytelling."] },
+      { id: 2,
+        judul: "Prestasi Polmed Melonjak pada PORSENI XV 2026, Koleksi 10 Emas dan Total 47 Medali",
+        tanggal: "2 Agustus 2026",
+        foto: "Imagee/imge1.png",
+        isi: ["Politeknik Negeri Medan (Polmed) meraih 47 medali pada PORSENI XV 2026, terdiri dari 10 emas, 11 perak, dan 26 perunggu. Prestasi ini meningkat signifikan dibandingkan PORSENI XIV 2024 yang hanya meraih 18 medali, menunjukkan daya saing mahasiswa Polmed yang semakin kuat di tingkat nasional."] },
+      { id: 3,
+        judul: "Delapan Gelar, Polmed Raih Juara Umum III National Welding Competition 2026",
+        tanggal: "20 Juli 2026",
+        foto: "Imagee/image2.png",
+        isi: ["Politeknik Negeri Medan (Polmed) meraih Juara Umum III pada <i>National Welding Competition</i> (NWC) 2026 di PPNS, 13–17 Juli 2026. Prestasi ini diraih kontingen Jurusan Teknik Mesin melalui delapan gelar juara dalam berbagai kategori pengelasan, dengan peserta dari D3 Teknik Mesin dan D4 Teknik Rekayasa Pengelasan dan Fabrikasi."] }
+    ];
+
+    const FITUR = [["▣", "Pendidikan Berkualitas"], ["☺", "Dosen Profesional"], ["⚙", "Fasilitas Modern"], ["✦", "Riset & Inovasi"], ["⇄", "Kolaborasi Industri"], ["◎", "Peluang Karier Luas"]];
+    const PRESTASI = [["1982", "Didirikan"], ["8,109", "Mahasiswa"], ["355", "Kerjasama"], ["676", "Pengajar & Staff"]];
+
+    /*  2. HELPER  */
+    const $ = (selector) => document.querySelector(selector);
+    const esc = (text) => String(text).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    const list = (items, tag = "ul") => `<${tag} class="list">${items.map((i) => `<li>${i}</li>`).join("")}</${tag}>`;
+    const stats = (items) => items.map(([nilai, label]) => `<div class="stat"><b>${nilai}</b><small>${label}</small></div>`).join("");
+    const baris = (k, v) => (v ? `<tr><th>${k}</th><td>${v}</td></tr>` : "");
+
+    // Program studi yang bisa dibuka (punya halaman detail)
+    const bisaDibuka = (key) => Boolean(key && PRODI[key] && PRODI[key].buka);
+
+    // Foto berita (kosong kalau tidak ada foto)
+    const foto = (n) => (n.foto ? `<img src="${n.foto}" alt="${esc(n.judul)}">` : "");
+
+    // crumbs: [["Label", "/path"], ["Halaman aktif"]]
+    const breadcrumb = (...crumbs) =>
+      `<div class="breadcrumb"><a href="#/">Beranda</a>${crumbs.map(([label, path]) => path ? ` / <a href="#${path}">${label}</a>` : ` / ${label}`).join("")}</div>`;
+
+    const pageHead = (crumbs, title) => breadcrumb(...crumbs) + `<h1 class="page-title">${title}</h1>`;
+
+    /*  3. KOMPONEN  */
+    const prodiCard = (key, p) => `
+      <div class="card">
+        <div class="icon">${p.ikon}</div>
+        <h3 style="font-size:15px;margin-top:10px">${p.nama}</h3>
+        <p style="font-size:13px;color:var(--muted)">${p.ringkas}</p>
+        ${p.buka ? `<a class="link" href="#/prodi/${key}">Detail Program →</a>` : ""}
+      </div>`;
+
+    const beritaCard = (n) => `
+      <a class="card" href="#/berita/${n.id}">
+        <div class="thumb">${foto(n)}</div>
+        <small style="color:var(--muted)">${n.tanggal}</small>
+        <h3 style="font-size:15px;margin:2px 0 0">${n.judul}</h3>
+      </a>`;
+
+    // Hanya program studi yang bisa dibuka yang menjadi link
+    const jurusanCard = (j) => `
+      <div>
+        <span class="jurusan-label">${j.nama}</span>
+        <ul class="jurusan-prodi">
+          ${j.prodi.map(([label, key]) =>
+            `<li>${bisaDibuka(key) ? `<a href="#/prodi/${key}">${label}</a>` : label}</li>`
+          ).join("")}
+        </ul>
+      </div>`;
+
+    const prodiCards = () => Object.entries(PRODI).map(([k, p]) => prodiCard(k, p)).join("");
+    const beritaCards = () => BERITA.map(beritaCard).join("");
+
+    /*  4. HALAMAN  */
+    const pages = {
+      beranda: () => `
+        <section class="hero">
+          <small style="letter-spacing:.2em">JURUSAN</small>
+          <h1>Teknik Komputer dan <b>Informatika</b></h1>
+          <strong>Politeknik Negeri Medan</strong>
+          <p>Membentuk talenta digital yang kompeten, inovatif, dan siap menghadapi tantangan industri</p>
+          <div class="actions">
+            <a class="btn" href="#/profil">Profil →</a>
+          </div>
+        </section>
+
+        <section class="features">${FITUR.map(([i, t]) => `<div><span class="icon">${i}</span>${t}</div>`).join("")}</section>
+
+        <div class="grid g2">
+          <section class="card">
+            <h2 class="section-title">Tentang Jurusan</h2>
+            <p>Jurusan Teknik Komputer dan Informatika Politeknik Negeri Medan berkomitmen untuk menghasilkan lulusan yang unggul
+               dan kompeten di bidang teknologi komputer, jaringan, perangkat lunak, serta sistem informasi. Lulusan dipersiapkan
+               untuk mampu beradaptasi dengan perkembangan teknologi dan bersaing di tingkat nasional maupun global.</p>
+            <a class="btn" href="#/tentang">Selengkapnya →</a>
+          </section>
+          <section class="card">
+            <h2 class="section-title">Program Studi <a href="#/prodi">Lihat Semua →</a></h2>
+            <div class="grid g2">${prodiCards()}</div>
+          </section>
+        </div>
+
+        <div class="grid g2 mt">
+          <section class="card">
+            <h2 class="section-title">Berita & Kegiatan <a href="#/berita">Lihat Semua →</a></h2>
+            <div class="grid g3">${beritaCards()}</div>
+          </section>
+          <section class="card">
+            <h2 class="section-title">Tentang</h2>
+            <div class="grid g4">${stats(PRESTASI)}</div>
+          </section>
+        </div>`,
+
+      tentang: () => pageHead([["Tentang Kami"]], "Tentang Kami") + `
+        <div class="grid">
+          <div class="card">
+            <h3>Visi</h3>
+            <p>Menjadi program studi teknik komputer unggul dalam pendidikan, pelatihan, maupun pengembangan teknik komputer terapan secara profesional di bidang automation pada tahun 2025.</p>
+            <h3>Misi</h3>
+            ${list([
+              "Menyelenggarakan pendidikan tinggi vokasi berkualitas yang menghasilkan lulusan terampil, kompeten dan berkarakter di bidang pembangunan infrastruktur, manufaktur, teknologi kelautan, bio industri, elektronika dan kelistrikan, ekonomi digital berbasis industri kreatif ramah lingkungan, logistik, pariwisata, teknologi informasi dan komunikasi di tingkat lokal, nasional dan internasional.",
+              "Melaksanakan penelitian terapan dan inovasi teknologi yang relevan dengan kebutuhan industri dan berkontribusi pada kemajuan sektor-sektor unggulan serta solusi untuk tantangan lokal, nasional dan internasional.",
+              "Melaksanakan pengabdian kepada masyarakat yang berdampak positif, dengan fokus pada pemberdayaan masyarakat dan pengembangan ekonomi melalui penerapan teknologi dalam rangka meningkatkan kesejahteraan masyarakat serta memajukan kewirausahaan di tingkat lokal, nasional dan internasional.",
+              "Menyelenggarakan tata kelola dengan prinsip efisien, efektif, akuntabel dan transparan dalam semua aspek operasional institusi untuk mendukung pencapaian visi.",
+              "Menjalin kemitraan strategis dengan industri, pemerintah, dan lembaga internasional untuk memperkuat relevansi pendidikan, penelitian, dan pengabdian kepada masyarakat untuk meningkatkan daya saing lulusan."
+            ], "ol")}
+          </div>
+
+          <div class="card">
+            <h3>Sekilas Jurusan</h3>
+            <p>Jurusan Teknik Komputer dan Informatika memiliki beberapa
+              program studi yang didukung oleh berbagai laboratorium, seperti
+              jaringan, pemrograman, multimedia, dan sistem tertanam. Jurusan juga
+              menjalin kemitraan dengan berbagai perusahaan teknologi untuk mendukung pengembangan kompetensi mahasiswa.</p>
+            <div class="row">
+              <a class="btn" href="#/profil">Lihat Profil</a>
+            </div>
+          </div>
+        </div>`,
+
+      profil: () => pageHead([["Tentang Kami", "/tentang"], ["Profil"]], "Profil") + `
+        <div class="grid">
+          <div class="card">
+            <h3>Sejarah Singkat</h3>
+            <p>Jurusan Teknik Komputer dan Informatika merupakan salah satu jurusan di Politeknik Negeri Medan yang bergerak di bidang teknologi komputer dan informatika.
+              Polmed awalnya berdiri sebagai Politeknik Universitas Sumatera Utara pada tahun 1982. Pada tahun 1997, Politeknik USU berubah menjadi Politeknik Negeri Medan
+              (Polmed). Seiring perkembangan teknologi, jurusan ini terus mengembangkan pendidikan di bidang komputer, jaringan, perangkat lunak, dan sistem informasi.
+              Jurusan ini berkomitmen menghasilkan lulusan yang kompeten dan siap menghadapi kebutuhan dunia industri.</p>
+            <h3>Fasilitas</h3>
+            ${list(["Laboratorium jaringan dan keamanan", "Laboratorium pemrograman dan basis data", "Laboratorium IoT dan robotika", "Ruang kolaborasi proyek mahasiswa"])}
+          </div>
+        </div>`,
+
+        prodi: (key) => {
+  // Daftar jurusan + program studi
+  if (!key) {
+    return pageHead([["Program Studi"]], "Program Studi") +
+      `<div class="jurusan-grid">${JURUSAN.map(jurusanCard).join("")}</div>`;
+  }
+
+  // Hanya program studi yang buka: true yang punya halaman
+  if (!bisaDibuka(key)) return pages.notFound();
+  const p = PRODI[key];
+
+  return pageHead([["Program Studi", "/prodi"], [p.nama]], p.nama) + `
+    <p style="color:var(--muted)">${p.ringkas}</p>
+
+    <div class="card">
+      <h3>Informasi Program</h3>
+      <table>
+        ${baris("Jurusan", p.jurusan)}
+        ${baris("Institusi", "Politeknik Negeri Medan")}
+        ${baris("Website", `<a class="link" href="${p.situs}" target="_blank" rel="noopener">${p.situs.replace("https://", "").replace(/\/$/, "")}</a>`)}
+      </table>
+    </div>
+
+    ${p.visi ? `
+    <div class="card mt">
+      <h3>Visi</h3>
+      <p>${p.visi}</p>
+      ${p.misi ? `<h3>Misi</h3>${list(p.misi)}` : ""}
+    </div>` : ""}
+
+    ${p.struktur ? `
+    <div class="card mt">
+      <h3>${p.struktur.judul}</h3>
+      <a class="struktur" href="${p.struktur.foto}" target="_blank" rel="noopener" title="Klik untuk memperbesar">
+        <img src="${p.struktur.foto}" alt="${esc(p.struktur.judul)}">
+      </a>
+      <p class="kalender-info">Klik gambar untuk melihat ukuran penuh.</p>
+    </div>` : ""}
+
+    <p><a class="link" href="#/prodi">← Semua program studi</a></p>`;
+},
+
+
+
+      akademik: () => pageHead([["Akademik"]], "Akademik") + `
+        <div class="card">
+          <h3>Kalender Akademik Semester Ganjil 2025/2026</h3>
+          <a class="kalender" href="Imagee/kalender.png" target="_blank" rel="noopener" title="Klik untuk memperbesar">
+            <img src="Imagee/kalender.png" alt="Kalender Akademik Semester A (Ganjil) Tahun Akademik 2025/2026 Politeknik Negeri Medan">
+          </a>
+          <p class="kalender-info">Bila ada perubahan tentang hari libur akan diumumkan kemudian.</p>
+        </div>`,
+
+      fasilitas: () => pageHead([["Fasilitas"]], "Fasilitas") + `
+        <div class="grid g3">
+          <div class="card">
+            <img src="imagee/lab.png"
+              alt="Laboratorium "
+              style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:12px;">
+            <h3>Laboratorium </h3>
+            <p> Laboratorium untuk mendukung praktikum teknik komputer </p>
+    </div>
+
+    <div class="card">
+      <img src="imagee/kelas.png"
+           alt="kelas CE"
+           style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:12px;">
+      <h3>Ruang Kelas</h3>
+      <p>Ruang pembelajaran yang mendukung kegiatan
+         perkuliahan dan praktik mahasiswa Teknik Komputer.</p>
+    </div>
+
+    <div class="card">
+      <img src="imagee/perpus.png"
+           alt="perpustakaan"
+           style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:12px;">
+      <h3>Perpustakaan</h3>
+        <p>Fasilitas untuk mendukung mahasiswa dalam mencari referensi dan
+           menambah pengetahuan di bidang komputer dan teknologi.</p>
+    </div>
+
+  </div>`,
+
+      berita: (id) => {
+        if (!id) return pageHead([["Berita"]], "Berita & Kegiatan") + `<div class="grid g3">${beritaCards()}</div>`;
+        const n = BERITA.find((b) => b.id === Number(id));
+        if (!n) return pages.notFound();
+        return breadcrumb(["Berita", "/berita"], [n.judul]) + `
+          <article class="card" style="max-width:760px">
+            <small style="color:var(--muted)">${n.tanggal}</small>
+            <h1 class="page-title">${n.judul}</h1>
+            <div class="thumb" style="height:260px">${foto(n)}</div>
+            ${n.isi.map((p) => `<p>${p}</p>`).join("")}
+            <a class="link" href="#/berita">← Kembali ke berita</a>
+          </article>`;
+      },
+
+      kontak: () => pageHead([["Kontak"]], "Kontak") + `
+        <div class="grid g2">
+          <div class="card">
+            <h3>Alamat</h3>
+            <p><br>Politeknik Negeri Medan<br>Jl. Almamater No. 1, Kampus USU</p>
+            <p> Medan, Sumatera Utara 20155 </p>
+            <p>Email: polmed@polmed.ac.id  <br>Telepon: 061- 8211235</p>
+          </div>
+          <div class="card">
+            <h3>Kirim Pesan</h3>
+            <div id="kontak-form">
+              <label for="k-nama">Nama</label><input id="k-nama">
+              <label for="k-email">Email</label><input id="k-email" type="email">
+              <label for="k-pesan">Pesan</label><textarea id="k-pesan" rows="4"></textarea>
+              <button class="btn" onclick="kirimPesan()">Kirim pesan</button>
+            </div>
+          </div>
+        </div>`,
+
+      notFound: () => `<div class="card"><h2>Halaman tidak ditemukan</h2><a class="link" href="#/">Kembali ke beranda</a></div>`
+    };
+
+    /*  5. AKSI (form kontak)  */
+    function kirimPesan() {
+      if (!$("#k-nama").value.trim() || !$("#k-pesan").value.trim()) {
+        alert("Isi nama dan pesan terlebih dahulu.");
+        return;
+      }
+      $("#kontak-form").innerHTML = '<p class="ok">Pesan terkirim. Terima kasih, kami akan membalas lewat email.</p>';
+    }
+
+    /*  6. ROUTER  */
+    function render() {
+      const [name = "", param] = location.hash.slice(1).split("/").filter(Boolean);
+      const page = name === "" ? pages.beranda : pages[name];
+
+      $("#app").innerHTML = page && name !== "notFound" ? page(param) : pages.notFound();
+
+      const active = "/" + (name in PARENT_MENU ? PARENT_MENU[name] : name);
+      $("#nav").innerHTML = MENU
+        .map(([path, label]) => `<a href="#${path}"${path === active ? ' class="on" aria-current="page"' : ""}>${label}</a>`)
+        .join("");
+
+      window.scrollTo(0, 0);
+    }
+
+    window.addEventListener("hashchange", render);
+    render();
+  </script>
+</body>
+</html>
